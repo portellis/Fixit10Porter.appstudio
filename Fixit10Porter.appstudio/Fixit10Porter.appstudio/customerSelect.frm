@@ -1,0 +1,70 @@
+{
+  "!type": "Form",
+  "_uuid": "91ef08b0bd1c45c2970093feae2824ef",
+  "HTML": "",
+  "attributes": "",
+  "background": "",
+  "backgroundimage": "",
+  "borderColor": "",
+  "borderStyle": "",
+  "borderWidth": "",
+  "cached_js": "",
+  "cached_js_script_hash": "d41d8cd98f00b204e9800998ecf8427e",
+  "children": [],
+  "class": "",
+  "designHeight": 0,
+  "designWidth": 0,
+  "expanded_pmp": true,
+  "fullScreen": "true",
+  "height": 460,
+  "id": "customerSelect",
+  "language": "JavaScript",
+  "left": "0",
+  "locked": false,
+  "modal": "false",
+  "onhide": "",
+  "onkeypress": "",
+  "onresize": "",
+  "onshow": "",
+  "openMode": "none",
+  "parentForm": "",
+  "position": "absolute",
+  "script": "\nlet req = \"\"\nlet query = \"\"\nlet results = \"\"\nlet resultstate = \"\"\nlet pw = \"radiatorZ48\"\n\nlet allCustomers = ['']\n\ncustomerSelect.onshow=function(){\n    drpCustomers.clear()\n    query = \"SELECT * FROM customer2\"\n    // Below change from my netID to yours (twice: user and database)    \n    req = Ajax(\"https://ormond.creighton.edu/courses/375/ajax-connection.php\", \"POST\", \"host=ormond.creighton.edu&user=klj73571&pass=\" + pw + \"&database=klj73571&query=\" + query)\n\n    if (req.status == 200) {            // transit trip worked.\n      results = JSON.parse(req.responseText)\n          // see if results are correct\n          console.log(results)\n          allCustomers = results\n      if (results.length == 0)           // no results were returned by the query\n          NSB.MsgBox(`There are no customers in the database.`)\n      else {            // query results were returned\n          for (i = 0; i < results.length; i++)\n            drpCustomers.addItem(results[i][1])\n      }\n    } else   // the transit didn't work - bad wifi? server off?\n        //transit error - Handle that with an error message.\n        NSB.MsgBox(\"Error code: \" + req.status)\n}\n\ndrpCustomers.onclick=function(c){\n    if (typeof(c) == \"object\"){  // means control clicked but no selection made yet\n      return                     // do nothing\n    } else {\n      drpCustomers.value = c\n      let message  = \"\"\n      for (i = 0; i < allCustomers.length; i++)\n        if (c == allCustomers[i][1])\n          custState = allCustomers[i][4]\n      for (i = 0; i < allCustomers.length; i++)\n        if (custState == allCustomers[i][4])\n          message = message + allCustomers[i][1] + \"\\n\"\n        txtOutput.value = `The following customers are all located in ${custState}: \\n${message}`\n    }\n}\n\n\n\n\n",
+  "setFocusID": "",
+  "style": "",
+  "theme": "",
+  "top": "0",
+  "width": 320,
+  "_functions": [
+    {
+      "!type": "Form",
+      "_uuid": "e6210029aab84cf6b22b6cd3d2e4a75a",
+      "cached_js": "",
+      "cached_js_script_hash": "d41d8cd98f00b204e9800998ecf8427e",
+      "children": [],
+      "expanded_pmp": true,
+      "id": "customerSelect.onshow",
+      "location": [
+        9,
+        10
+      ],
+      "script": "",
+      "signature": "customerSelect.onshow()"
+    },
+    {
+      "!type": "Form",
+      "_uuid": "4c1962be4d8b47eda711acc96136af0a",
+      "cached_js": "",
+      "cached_js_script_hash": "d41d8cd98f00b204e9800998ecf8427e",
+      "children": [],
+      "expanded_pmp": true,
+      "id": "drpCustomers.onclick",
+      "location": [
+        31,
+        32
+      ],
+      "script": "",
+      "signature": "drpCustomers.onclick(c)"
+    }
+  ]
+}
